@@ -1,1 +1,552 @@
 
+/* ==========================================
+   CHATBOT CÔ HƯỜNG
+   GIAO DIỆN TƯƠNG TỰ HÌNH MẪU
+   ========================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --purple: #6235e8;
+    --purple-dark: #5128d5;
+    --background: #f8f8fc;
+    --border: #e5e5ed;
+    --text: #30303a;
+}
+
+/* ==========================================
+   1. TOÀN BỘ TRANG
+   ========================================== */
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #eeeeF5;
+    color: var(--text);
+    overflow: hidden;
+}
+
+/* ==========================================
+   2. KHUNG CHATBOT
+   ========================================== */
+
+.chat-container {
+    width: 100%;
+    max-width: 520px;
+    height: 100vh;
+    height: 100dvh;
+
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+
+    background: white;
+    border: 1px solid #dedee8;
+    border-radius: 14px;
+
+    overflow: hidden;
+}
+
+/* ==========================================
+   3. THANH TIÊU ĐỀ MÀU TÍM
+   ========================================== */
+
+.chat-header {
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    min-height: 60px;
+    padding: 10px 16px;
+
+    color: white;
+
+    background: linear-gradient(
+        110deg,
+        #6538ed,
+        #5528d8
+    );
+
+    border-bottom: 1px solid #e0d9ff;
+}
+
+/* Avatar trên tiêu đề */
+
+.avatar {
+    width: 34px;
+    height: 34px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(255, 255, 255, 0.2);
+
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+
+    font-size: 15px;
+}
+
+/* Tên và chức danh */
+
+.header-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.header-info h2 {
+    font-size: 14px;
+    font-weight: 600;
+
+    margin-bottom: 3px;
+}
+
+.header-info p {
+    font-size: 10px;
+    line-height: 1.4;
+
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Trạng thái trực tuyến */
+
+.status {
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+.status .dot {
+    width: 7px;
+    height: 7px;
+
+    background: #55e99b;
+    border-radius: 50%;
+
+    box-shadow: 0 0 5px rgba(85, 233, 155, 0.4);
+}
+
+/* ==========================================
+   4. KHUNG TIN NHẮN
+   ========================================== */
+
+.chat-messages {
+    flex: 1;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
+
+    padding: 18px 15px;
+
+    background: var(--background);
+
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+/* Thanh cuộn */
+
+.chat-messages::-webkit-scrollbar {
+    width: 5px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #d8d8e5;
+    border-radius: 10px;
+}
+
+/* ==========================================
+   5. TIN NHẮN
+   ========================================== */
+
+.message {
+    display: flex;
+    align-items: flex-end;
+
+    gap: 8px;
+
+    width: 100%;
+}
+
+/* Tin nhắn của chatbot */
+
+.bot-message {
+    justify-content: flex-start;
+}
+
+/* Tin nhắn của học sinh */
+
+.user-message {
+    justify-content: flex-end;
+}
+
+/* Avatar trong tin nhắn */
+
+.bot-avatar {
+    width: 26px;
+    height: 26px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #e9e7ff;
+    color: var(--purple);
+
+    border-radius: 50%;
+
+    font-size: 12px;
+}
+
+/* Nội dung tin nhắn */
+
+.message-content {
+    max-width: 85%;
+
+    padding: 10px 12px;
+
+    background: white;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    font-size: 12px;
+    line-height: 1.55;
+
+    overflow-wrap: anywhere;
+}
+
+/* Tin nhắn đầu tiên */
+
+.bot-message .message-content {
+    border-top-left-radius: 5px;
+}
+
+/* Các đoạn văn trong tin nhắn */
+
+.message-content p {
+    margin-bottom: 5px;
+}
+
+.message-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* Tin nhắn học sinh */
+
+.user-message .message-content {
+    color: #29233b;
+
+    background: #f0eaff;
+
+    border: 1px solid #e3d9ff;
+
+    border-radius: 12px;
+    border-top-right-radius: 5px;
+}
+
+/* ==========================================
+   6. HIỆU ỨNG CHATBOT ĐANG TRẢ LỜI
+   ========================================== */
+
+.typing-indicator,
+.typing-message {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    padding: 10px 12px;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.typing-indicator span,
+.typing-message span {
+    width: 5px;
+    height: 5px;
+
+    background: #999;
+    border-radius: 50%;
+
+    animation: typing 1s infinite ease-in-out;
+}
+
+.typing-indicator span:nth-child(2),
+.typing-message span:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.typing-indicator span:nth-child(3),
+.typing-message span:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+@keyframes typing {
+    0%, 60%, 100% {
+        transform: translateY(0);
+    }
+
+    30% {
+        transform: translateY(-4px);
+    }
+}
+
+/* ==========================================
+   7. CÁC NÚT GỢI Ý NHANH
+   ========================================== */
+
+.quick-replies {
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 10px 14px;
+
+    background: white;
+
+    border-top: 1px solid #f0f0f5;
+
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.quick-replies::-webkit-scrollbar {
+    display: none;
+}
+
+/* Nút gợi ý */
+
+.reply-btn {
+    flex-shrink: 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    padding: 8px 11px;
+
+    background: #f5f5f9;
+
+    border: 1px solid #e5e5ed;
+    border-radius: 20px;
+
+    color: #454550;
+
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+/* Biểu tượng trong nút */
+
+.reply-btn i {
+    font-size: 10px;
+    color: #555568;
+}
+
+/* Khi di chuột */
+
+.reply-btn:hover {
+    background: #eee8ff;
+    border-color: #c9b9ff;
+    color: var(--purple);
+}
+
+/* ==========================================
+   8. Ô NHẬP TIN NHẮN
+   ========================================== */
+
+.chat-input-container {
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 8px 14px 10px;
+
+    background: white;
+}
+
+/* Ô nhập */
+
+#messageInput {
+    flex: 1;
+    min-width: 0;
+
+    height: 40px;
+
+    padding: 0 14px;
+
+    background: white;
+
+    border: 1px solid #e2e2eb;
+    border-radius: 24px;
+
+    outline: none;
+
+    color: var(--text);
+
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+
+    transition: border-color 0.2s ease;
+}
+
+/* Chữ gợi ý trong ô nhập */
+
+#messageInput::placeholder {
+    color: #9999a5;
+}
+
+/* Khi chọn ô nhập */
+
+#messageInput:focus {
+    border-color: var(--purple);
+}
+
+/* ==========================================
+   9. NÚT GỬI TIN NHẮN
+   ========================================== */
+
+.send-btn {
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--purple);
+
+    border: none;
+    border-radius: 50%;
+
+    color: white;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+/* Khi di chuột */
+
+.send-btn:hover {
+    background: var(--purple-dark);
+}
+
+/* Khi nút bị khóa */
+
+.send-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ==========================================
+   10. DÒNG CHỮ CUỐI GIAO DIỆN
+   ========================================== */
+
+.footer-note {
+    flex-shrink: 0;
+
+    padding: 5px 10px 7px;
+
+    text-align: center;
+
+    background: white;
+
+    border-top: 1px solid #f1f1f5;
+
+    color: #a0a0ac;
+
+    font-size: 9px;
+}
+
+/* ==========================================
+   11. GIAO DIỆN ĐIỆN THOẠI
+   ========================================== */
+
+@media (max-width: 600px) {
+
+    .chat-container {
+        width: 100%;
+        height: 100vh;
+        height: 100dvh;
+
+        border: none;
+        border-radius: 0;
+    }
+
+    .chat-header {
+        padding: 10px 14px;
+    }
+
+    .chat-messages {
+        padding: 14px 10px;
+        gap: 12px;
+    }
+
+    .message-content {
+        max-width: 88%;
+    }
+
+    .quick-replies {
+        padding: 9px 10px;
+        gap: 6px;
+    }
+
+    .reply-btn {
+        padding: 8px 9px;
+        font-size: 10px;
+    }
+
+    .chat-input-container {
+        padding: 8px 10px;
+    }
+
+    .footer-note {
+        padding-bottom: 6px;
+    }
+}
