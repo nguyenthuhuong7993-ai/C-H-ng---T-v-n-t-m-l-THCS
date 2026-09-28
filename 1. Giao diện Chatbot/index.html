@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -8,267 +10,460 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Trợ lý AI Tư vấn Tâm lý Học đường</title>
+    <title>
+        Trợ lý AI Tư vấn Tâm lý Học đường
+    </title>
 
-    <link rel="stylesheet" href="style.css">
+    <meta
+        name="description"
+        content="Trợ lý AI hỗ trợ tư vấn tâm lý học đường dành cho học sinh THCS"
+    >
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
 </head>
+
 
 <body>
 
-    <div class="app-container">
 
-        <!-- =========================
-             HEADER
-        ========================== -->
-        <header class="chat-header">
+<!-- ======================================================
+     TOÀN BỘ ỨNG DỤNG
+====================================================== -->
 
-            <div class="header-left">
+<div class="app-container">
 
-                <div class="bot-avatar">
-                    🤖
-                </div>
 
-                <div class="header-information">
+    <!-- ==================================================
+         HEADER
+    =================================================== -->
 
-                    <h1>
-                        Trợ lý AI Tư vấn Tâm lý Học đường
-                    </h1>
+    <header class="app-header">
 
-                    <div class="online-status">
-                        <span class="status-dot"></span>
-                        Đang hoạt động
-                    </div>
+        <div class="header-left">
 
-                </div>
-
+            <div class="ai-avatar">
+                🤖
             </div>
 
-            <button
-                class="new-chat-button"
-                id="newChatButton"
-                title="Cuộc trò chuyện mới"
-            >
-                ＋
-            </button>
+            <div class="header-info">
 
-        </header>
+                <h1>
+                    Trợ lý AI Tư vấn
+                    <span>Tâm lý Học đường</span>
+                </h1>
 
+                <div class="online-status">
 
-        <!-- =========================
-             CHAT AREA
-        ========================== -->
-        <main
-            class="chat-box"
-            id="chatBox"
-        >
+                    <span class="online-dot"></span>
 
-            <!-- Tin nhắn chào mừng -->
-            <div class="message-row bot-row">
-
-                <div class="message-avatar">
-                    🤖
-                </div>
-
-                <div class="message bot-message">
-
-                    <div class="message-text">
-
-                        <strong>
-                            Xin chào! 🌷
-                        </strong>
-
-                        <p>
-                            Mình là Trợ lý AI Tư vấn Tâm lý Học đường.
-                        </p>
-
-                        <p>
-                            Mình có thể lắng nghe và cùng bạn trao đổi
-                            về những điều đang khiến bạn buồn, lo lắng,
-                            căng thẳng hoặc khó xử.
-                        </p>
-
-                        <p>
-                            Bạn có thể chọn một chủ đề bên dưới hoặc
-                            trực tiếp viết điều bạn muốn chia sẻ nhé.
-                        </p>
-
-                    </div>
+                    Đang hoạt động
 
                 </div>
-
-            </div>
-
-
-            <!-- =========================
-                 GỢI Ý
-            ========================== -->
-
-            <div
-                class="suggestions"
-                id="suggestions"
-            >
-
-                <button
-                    class="suggestion-button"
-                    data-message="Em đang cảm thấy buồn và không biết phải làm gì."
-                >
-                    😔 Em đang buồn
-                </button>
-
-                <button
-                    class="suggestion-button"
-                    data-message="Em đang cảm thấy áp lực vì việc học."
-                >
-                    📚 Áp lực học tập
-                </button>
-
-                <button
-                    class="suggestion-button"
-                    data-message="Em đang có vấn đề với bạn bè."
-                >
-                    👭 Vấn đề với bạn bè
-                </button>
-
-                <button
-                    class="suggestion-button"
-                    data-message="Em đang bị bạn bè bắt nạt."
-                >
-                    🏫 Bị bắt nạt
-                </button>
-
-                <button
-                    class="suggestion-button"
-                    data-message="Em đang có chuyện không vui với gia đình."
-                >
-                    👨‍👩‍👧 Chuyện gia đình
-                </button>
-
-                <button
-                    class="suggestion-button"
-                    data-message="Em đang lo lắng và căng thẳng."
-                >
-                    😰 Lo lắng, căng thẳng
-                </button>
-
-                <button
-                    class="suggestion-button"
-                    data-message="Em muốn chia sẻ về chuyện tình cảm tuổi học trò."
-                >
-                    ❤️ Chuyện tình cảm
-                </button>
-
-                <button
-                    class="suggestion-button danger-button"
-                    data-message="Em đang gặp một chuyện rất nghiêm trọng và cần được giúp đỡ."
-                >
-                    🆘 Em cần được giúp đỡ
-                </button>
-
-            </div>
-
-
-            <!-- Typing indicator -->
-
-            <div
-                class="typing-row"
-                id="typingIndicator"
-                style="display: none;"
-            >
-
-                <div class="message-avatar">
-                    🤖
-                </div>
-
-                <div class="typing-message">
-
-                    <span></span>
-                    <span></span>
-                    <span></span>
-
-                </div>
-
-            </div>
-
-        </main>
-
-
-        <!-- =========================
-             COUNSELOR CONTACT
-        ========================== -->
-
-        <div
-            class="counselor-card"
-            id="counselorCard"
-            style="display: none;"
-        >
-
-            <div class="counselor-icon">
-                👩‍🏫
-            </div>
-
-            <div class="counselor-information">
-
-                <strong>
-                    Giáo viên tư vấn tâm lý
-                </strong>
-
-                <p>
-                    Cô Nguyễn Thị Thu Hường
-                </p>
-
-                <small>
-                    Trường THCS Phụng Công
-                </small>
-
-                <small>
-                    🕐 Thời gian hỗ trợ: 7h00 – 22h00
-                </small>
 
             </div>
 
         </div>
 
 
-        <!-- =========================
-             INPUT AREA
-        ========================== -->
+        <div class="header-right">
 
-        <footer class="input-area">
+            <div class="safe-badge">
+
+                🔒
+
+                <span>
+                    Không phán xét
+                </span>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ==================================================
+         NỘI DUNG CHÍNH
+    =================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =================================================
+             PHẦN GIỚI THIỆU
+        ================================================== -->
+
+        <section
+            class="welcome-section"
+            id="welcomeSection"
+        >
+
+            <div class="welcome-icon">
+                💙
+            </div>
+
+            <h2>
+                Chào em! 👋
+            </h2>
+
+            <p>
+
+                Cô là <strong>Trợ lý AI Tư vấn
+                Tâm lý Học đường</strong>.
+
+            </p>
+
+            <p>
+
+                Em có thể chia sẻ những điều đang
+                khiến em buồn, lo lắng, áp lực hoặc
+                khó xử.
+
+            </p>
+
+            <p class="welcome-small">
+
+                Em không cần phải kể tất cả.
+                Hãy bắt đầu bằng điều em cảm thấy
+                khó nói nhất.
+
+            </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             KHUNG CHAT
+        ================================================== -->
+
+        <section
+            class="chat-container"
+            id="chatContainer"
+        >
+
+            <div
+                class="chat-box"
+                id="chatBox"
+            >
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             GỢI Ý CHỦ ĐỀ
+        ================================================== -->
+
+        <section
+            class="suggestion-section"
+            id="suggestions"
+        >
+
+            <div class="suggestion-title">
+
+                💬 Em muốn nói về...
+
+            </div>
+
+
+            <div class="suggestion-list">
+
+
+                <button
+                    type="button"
+                    class="suggestion-btn"
+                    data-message="Em đang cảm thấy rất áp lực trong chuyện học tập."
+                >
+
+                    📚
+
+                    <span>
+                        Học tập
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="suggestion-btn"
+                    data-message="Em đang có chuyện buồn với bạn bè."
+                >
+
+                    👭
+
+                    <span>
+                        Bạn bè
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="suggestion-btn"
+                    data-message="Em đang bị các bạn bắt nạt và không biết phải làm gì."
+                >
+
+                    🏫
+
+                    <span>
+                        Bắt nạt
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="suggestion-btn"
+                    data-message="Dạo này em cảm thấy rất buồn và không biết tại sao."
+                >
+
+                    😔
+
+                    <span>
+                        Cảm xúc
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="suggestion-btn"
+                    data-message="Em đang có chuyện khiến em rất lo lắng."
+                >
+
+                    😟
+
+                    <span>
+                        Lo lắng
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="suggestion-btn"
+                    data-message="Em đang gặp chuyện khó nói với gia đình."
+                >
+
+                    👨‍👩‍👧
+
+                    <span>
+                        Gia đình
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="suggestion-btn"
+                    data-message="Em đang có một cảm xúc đặc biệt với một bạn."
+                >
+
+                    💕 
+
+                    <span>
+                        Tình cảm
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="suggestion-btn"
+                    data-message="Gần đây em cảm thấy mất tự tin về bản thân."
+                >
+
+                    💪
+
+                    <span>
+                        Tự tin
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="suggestion-btn"
+                    data-message="Em thường xuyên khó ngủ và cảm thấy mệt."
+                >
+
+                    😴
+
+                    <span>
+                        Giấc ngủ
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="suggestion-btn"
+                    data-message="Em đang gặp một chuyện khó xử trên mạng xã hội."
+                >
+
+                    📱
+
+                    <span>
+                        Mạng xã hội
+                    </span>
+
+                </button>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             KHU VỰC NHẬP TIN NHẮN
+        ================================================== -->
+
+        <section class="input-section">
+
 
             <div class="input-wrapper">
 
+
                 <textarea
                     id="messageInput"
-                    placeholder="Hãy viết điều bạn muốn chia sẻ..."
+                    class="message-input"
                     rows="1"
-                    maxlength="2000"
+                    maxlength="5000"
+                    placeholder="Hãy viết điều em đang muốn chia sẻ..."
+                    aria-label="Nhập tin nhắn"
                 ></textarea>
 
+
                 <button
+                    type="button"
                     id="sendButton"
                     class="send-button"
-                    title="Gửi tin nhắn"
+                    aria-label="Gửi tin nhắn"
                 >
-                    ➤
+
+                    <span class="send-icon">
+                        ➤
+                    </span>
+
+                    <span class="send-text">
+                        Gửi
+                    </span>
+
                 </button>
 
-            </div>
-
-            <div class="privacy-note">
-
-                🔒 Không chia sẻ mật khẩu, mã OTP,
-                thông tin tài khoản hoặc hình ảnh riêng tư.
 
             </div>
 
-        </footer>
 
-    </div>
+            <div class="input-note">
+
+                Nhấn <strong>Enter</strong> để gửi.
+                Nhấn <strong>Shift + Enter</strong>
+                để xuống dòng.
+
+            </div>
+
+        </section>
 
 
-    <script src="knowledgeBase.js"></script>
+
+        <!-- =================================================
+             THÔNG TIN AN TOÀN
+        ================================================== -->
+
+        <section class="safety-section">
+
+
+            <div class="safety-icon">
+                🛡️
+            </div>
+
+
+            <div class="safety-content">
+
+                <h3>
+                    Lưu ý về an toàn
+                </h3>
+
+                <p>
+
+                    Trợ lý AI giúp em chia sẻ và
+                    tìm hướng giải quyết ban đầu.
+                    Đây không phải là bác sĩ hoặc
+                    chuyên gia tâm lý.
+
+                </p>
+
+                <p>
+
+                    Nếu em đang gặp nguy hiểm hoặc
+                    cảm thấy mình có thể làm tổn thương
+                    bản thân, hãy tìm ngay một người
+                    lớn mà em tin tưởng để được hỗ trợ.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- ==================================================
+         FOOTER
+    =================================================== -->
+
+    <footer class="app-footer">
+
+        <div>
+            🤖 Trợ lý AI Tư vấn Tâm lý Học đường
+        </div>
+
+        <div>
+            Trường THCS Phụng Công
+        </div>
+
+    </footer>
+
+
+</div>
+
+
+
+<!-- ======================================================
+     JAVASCRIPT
+     
+     THỨ TỰ NÀY RẤT QUAN TRỌNG
+====================================================== -->
+
+<script src="knowledgeBase.js"></script>
+
 <script src="counselingRules.js"></script>
+
 <script src="app.js"></script>
 
+
 </body>
+
 </html>
