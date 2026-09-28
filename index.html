@@ -1,69 +1,1461 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cô Hường - Tư vấn Tâm lý Học đường</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cô Hường - Tư vấn Tâm lý Học đường</title>
+<style>
+
+:root {
+  --primary: #6235e8;
+  --primary-dark: #5125cf;
+  --chat-bg: #f8f8fc;
+  --text-color: #252535;
+  --border-color: #e5e5ef;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 100%; height: 100%; }
+body {
+  font-family: Arial, sans-serif;
+  color: var(--text-color);
+  background: #f1f1f7;
+}
+.chat-container {
+  width: 100%;
+  max-width: 520px;
+  height: 100dvh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e7e7ef;
+  border-radius: 14px;
+}
+.chat-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+  color: #fff;
+  background: linear-gradient(120deg, #6637ed, #5528d9);
+}
+.header-avatar {
+  width: 38px; height: 38px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,.18);
+  border-radius: 50%; font-size: 21px;
+}
+.header-info { flex: 1; min-width: 0; }
+.header-name { font-size: 15px; font-weight: 700; }
+.header-role { margin-top: 3px; font-size: 11px; opacity: .9; }
+.header-status {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; white-space: nowrap;
+}
+.status-dot { width: 7px; height: 7px; border-radius: 50%; background: #62e89b; }
+#chatBox {
+  flex: 1; min-height: 0; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 12px;
+  padding: 18px 16px; background: var(--chat-bg);
+  scroll-behavior: smooth;
+}
+.message-row { display: flex; align-items: flex-end; gap: 8px; width: 100%; }
+.message-row.assistant { justify-content: flex-start; }
+.message-row.user { justify-content: flex-end; }
+.message-avatar {
+  width: 27px; height: 27px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: #eeeeff; border-radius: 50%; font-size: 15px;
+}
+.message-row.user .message-avatar { display: none; }
+.message-bubble {
+  max-width: 82%; padding: 11px 13px;
+  font-size: 14px; line-height: 1.55; overflow-wrap: anywhere;
+  background: #fff; border: 1px solid var(--border-color); border-radius: 15px;
+}
+.message-row.assistant .message-bubble { color: #303044; border-top-left-radius: 5px; }
+.message-row.user .message-bubble {
+  color: #fff; background: var(--primary); border-color: var(--primary);
+  border-top-right-radius: 5px;
+}
+.typing-bubble { display: flex; align-items: center; gap: 4px; }
+.typing-dot {
+  width: 6px; height: 6px; background: #aaa; border-radius: 50%;
+  animation: typing 1s infinite ease-in-out;
+}
+.typing-dot:nth-child(2) { animation-delay: .15s; }
+.typing-dot:nth-child(3) { animation-delay: .3s; }
+@keyframes typing {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-4px); }
+}
+.counselor-card {
+  margin: 8px 0 8px 35px; padding: 14px; background: #fff;
+  border: 1px solid var(--border-color); border-radius: 12px;
+  font-size: 13px; line-height: 1.6;
+}
+.chat-footer { flex-shrink: 0; padding: 10px 14px 14px; background: #fff; border-top: 1px solid #eeeef4; }
+#suggestions {
+  display: flex; gap: 7px; margin-bottom: 12px;
+  overflow-x: auto; padding-bottom: 2px;
+}
+.suggestion-btn {
+  flex-shrink: 0; padding: 8px 11px; border: 1px solid #e7e7ef;
+  border-radius: 20px; background: #f6f6fa; color: #454555;
+  font-size: 12px; cursor: pointer; white-space: nowrap;
+}
+.suggestion-btn:hover { background: #eee8ff; border-color: #c9b9ff; }
+.chat-input-row { display: flex; align-items: center; gap: 9px; }
+#messageInput {
+  flex: 1; min-width: 0; min-height: 42px; max-height: 110px;
+  padding: 11px 14px; border: 1px solid #e4e4ed; border-radius: 24px;
+  outline: none; background: #fff; color: var(--text-color); font-size: 13px;
+}
+#messageInput:focus { border-color: var(--primary); }
+#sendButton {
+  width: 42px; height: 42px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border: none; border-radius: 50%; background: var(--primary);
+  color: #fff; font-size: 18px; cursor: pointer;
+}
+#sendButton:hover { background: var(--primary-dark); }
+#sendButton:disabled { opacity: .6; cursor: not-allowed; }
+@media (max-width: 600px) {
+  .chat-container { width: 100%; height: 100dvh; border-radius: 0; border: none; }
+  #chatBox { padding: 14px 10px; }
+  .message-bubble { max-width: 88%; }
+  .chat-footer { padding: 9px 10px 12px; }
+}
+
+</style>
 </head>
 <body>
-    <div class="chat-container">
-        <!-- Header -->
-        <div class="chat-header">
-            <div class="avatar">
-                <i class="fas fa-user-nurse"></i>
-            </div>
-            <div class="header-info">
-                <h2>Cô Hường</h2>
-                <p>Chuyên gia Tư vấn Tâm lý Học đường</p>
-            </div>
-            <div class="status online">
-                <span class="dot"></span>
-                Trực tuyến
-            </div>
-        </div>
-
-        <!-- Khung hội thoại -->
-        <div class="chat-messages" id="chatMessages">
-            <div class="message bot-message">
-                <div class="bot-avatar">
-                    <i class="fas fa-user-nurse"></i>
-                </div>
-                <div class="message-content">
-                    <p>Chào em! 👋 Cô Hường rất vui được trò chuyện cùng em!</p>
-                    <p>Nếu em có bất kỳ khó khăn, lo lắng nào trong học tập, bạn bè, gia đình hay cảm xúc, hãy chia sẻ với cô nhé 💜</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Nút gợi ý nhanh -->
-        <div class="quick-replies" id="quickReplies">
-            <button class="reply-btn" data-message="Em muốn được tư vấn">
-                <i class="fas fa-lightbulb"></i> Tôi muốn được tư vấn
-            </button>
-            <button class="reply-btn" data-message="Em đang gặp khó khăn">
-                <i class="fas fa-hand-holding-heart"></i> Tôi đang gặp khó khăn
-            </button>
-            <button class="reply-btn" data-message="Em muốn tâm sự">
-                <i class="fas fa-heart"></i> Tôi muốn tâm sự
-            </button>
-        </div>
-
-        <!-- Ô nhập tin nhắn -->
-        <div class="chat-input-container">
-            <input type="text" id="messageInput" placeholder="Nhập câu hỏi của em..." autocomplete="off">
-            <button id="sendBtn" class="send-btn">
-                <i class="fas fa-paper-plane"></i>
-            </button>
-        </div>
-
-        <div class="footer-note">
-            Chatbot Cô Hường • Luôn lắng nghe em
-        </div>
+<div class="chat-container">
+  <header class="chat-header">
+    <div class="header-avatar">👩🏻‍🏫</div>
+    <div class="header-info">
+      <div class="header-name">Cô Hường</div>
+      <div class="header-role">Giáo viên Tư vấn Tâm lý Học đường</div>
     </div>
+    <div class="header-status"><span class="status-dot"></span>Trực tuyến</div>
+  </header>
 
-    <script src="knowledge.js"></script>
-    <script src="app.js"></script>
+  <div id="chatBox" aria-live="polite"></div>
+
+  <footer class="chat-footer">
+    <div id="suggestions">
+      <button class="suggestion-btn" data-message="Em muốn được tư vấn">💬 Tôi muốn được tư vấn</button>
+      <button class="suggestion-btn" data-message="Em đang gặp khó khăn">✨ Tôi đang gặp khó khăn</button>
+      <button class="suggestion-btn" data-message="Em muốn tâm sự">💜 Tôi muốn tâm sự</button>
+    </div>
+    <div class="chat-input-row">
+      <input id="messageInput" type="text" placeholder="Nhập câu hỏi của em..." autocomplete="off">
+      <button id="sendButton" type="button" aria-label="Gửi tin nhắn">➤</button>
+    </div>
+  </footer>
+</div>
+
+<script>
+/* =========================================================
+   CÔ HƯỜNG - CHATBOT TƯ VẤN TÂM LÝ HỌC ĐƯỜNG
+   Dành cho học sinh THCS
+
+   Phiên bản giao diện:
+   - Đơn giản
+   - Thân thiện
+   - Dễ sử dụng
+   - Phù hợp học sinh THCS
+   - Có kết nối API /api/chat
+   ========================================================= */
+
+
+/* =========================================================
+   1. THÔNG TIN GIÁO VIÊN TƯ VẤN
+   ========================================================= */
+
+const COUNSELOR = {
+    name: "Cô Hường",
+    fullName: "Nguyễn Thị Thu Hường",
+    title: "Giáo viên Tư vấn Tâm lý Học đường",
+    school: "Trường THCS Phụng Công",
+    hours: "7h00 – 22h00",
+
+    // Khi bạn muốn hiển thị số điện thoại,
+    // hãy điền số vào đây.
+    phone: ""
+};
+
+
+/* =========================================================
+   2. BIẾN TOÀN CỤC
+   ========================================================= */
+
+let conversationHistory = [];
+
+let isSending = false;
+
+let firstMessageShown = false;
+
+
+/* =========================================================
+   3. LẤY CÁC THÀNH PHẦN GIAO DIỆN
+   ========================================================= */
+
+const chatBox =
+    document.getElementById("chatBox");
+
+const messageInput =
+    document.getElementById("messageInput") ||
+    document.getElementById("chatInput");
+
+const sendButton =
+    document.getElementById("sendButton") ||
+    document.getElementById("sendBtn");
+
+const suggestionButtons =
+    document.querySelectorAll(
+        ".suggestion-btn, .suggestion"
+    );
+
+
+/* =========================================================
+   4. KIỂM TRA GIAO DIỆN
+   ========================================================= */
+
+if (!chatBox) {
+    console.warn(
+        "Không tìm thấy phần tử #chatBox."
+    );
+}
+
+if (!messageInput) {
+    console.warn(
+        "Không tìm thấy ô nhập tin nhắn."
+    );
+}
+
+if (!sendButton) {
+    console.warn(
+        "Không tìm thấy nút gửi."
+    );
+}
+
+
+/* =========================================================
+   5. THÊM TIN NHẮN VÀO KHUNG CHAT
+   ========================================================= */
+
+function addMessage(
+    sender,
+    message,
+    options = {}
+) {
+
+    if (!chatBox) return null;
+
+    const messageRow =
+        document.createElement("div");
+
+    messageRow.className =
+        `message-row ${sender}`;
+
+    if (options.extraClass) {
+        messageRow.classList.add(
+            options.extraClass
+        );
+    }
+
+
+    /* Avatar */
+
+    const avatar =
+        document.createElement("div");
+
+    avatar.className = "message-avatar";
+
+
+    if (sender === "assistant") {
+
+        avatar.innerHTML = "👩🏻‍🏫";
+
+    } else {
+
+        avatar.innerHTML = "👤";
+    }
+
+
+    /* Nội dung */
+
+    const bubble =
+        document.createElement("div");
+
+    bubble.className = "message-bubble";
+
+
+    /* Format nội dung */
+
+    bubble.innerHTML =
+        formatMessage(message);
+
+
+    messageRow.appendChild(avatar);
+
+    messageRow.appendChild(bubble);
+
+    chatBox.appendChild(messageRow);
+
+
+    scrollToBottom();
+
+
+    return messageRow;
+}
+
+
+/* =========================================================
+   6. FORMAT TIN NHẮN
+   ========================================================= */
+
+function formatMessage(message) {
+
+    if (!message) return "";
+
+
+    let text =
+        String(message);
+
+
+    /*
+       Nếu backend trả về HTML,
+       giữ lại các thẻ cơ bản.
+    */
+
+    text = text
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+        .replace(/\*(.*?)\*/g, "<em>$1</em>")
+        .replace(/\n/g, "<br>");
+
+
+    return text;
+}
+
+
+/* =========================================================
+   7. CUỘN XUỐNG CUỐI KHUNG CHAT
+   ========================================================= */
+
+function scrollToBottom() {
+
+    if (!chatBox) return;
+
+    setTimeout(() => {
+
+        chatBox.scrollTop =
+            chatBox.scrollHeight;
+
+    }, 50);
+}
+
+
+/* =========================================================
+   8. HIỆN HIỆU ỨNG "CÔ HƯỜNG ĐANG GÕ..."
+   ========================================================= */
+
+function showTyping() {
+
+    if (!chatBox) return;
+
+
+    removeTyping();
+
+
+    const typingRow =
+        document.createElement("div");
+
+    typingRow.id =
+        "typingIndicator";
+
+    typingRow.className =
+        "message-row assistant";
+
+
+    typingRow.innerHTML = `
+        <div class="message-avatar">👩🏻‍🏫</div>
+
+        <div class="message-bubble typing-bubble">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+        </div>
+    `;
+
+
+    chatBox.appendChild(
+        typingRow
+    );
+
+
+    scrollToBottom();
+}
+
+
+/* =========================================================
+   9. XÓA HIỆU ỨNG ĐANG GÕ
+   ========================================================= */
+
+function removeTyping() {
+
+    const typing =
+        document.getElementById(
+            "typingIndicator"
+        );
+
+    if (typing) {
+
+        typing.remove();
+
+    }
+}
+
+
+/* =========================================================
+   10. HIỆN THÔNG TIN CÔ HƯỜNG
+   ========================================================= */
+
+function showCounselor() {
+
+    if (!chatBox) return;
+
+
+    /*
+       Không tạo quá nhiều thẻ liên hệ
+    */
+
+    const oldCard =
+        document.getElementById(
+            "counselorCard"
+        );
+
+    if (oldCard) {
+
+        oldCard.remove();
+
+    }
+
+
+    const card =
+        document.createElement("div");
+
+    card.id =
+        "counselorCard";
+
+    card.className =
+        "counselor-card";
+
+
+    let phoneHTML = "";
+
+
+    if (COUNSELOR.phone) {
+
+        phoneHTML = `
+            <div class="counselor-phone">
+                📞 ${COUNSELOR.phone}
+            </div>
+        `;
+
+    }
+
+
+    card.innerHTML = `
+
+        <div class="counselor-card-title">
+            👩🏻‍🏫 Cô Hường có thể hỗ trợ em
+        </div>
+
+        <div class="counselor-card-name">
+            ${COUNSELOR.name}
+        </div>
+
+        <div class="counselor-card-role">
+            ${COUNSELOR.title}
+        </div>
+
+        <div class="counselor-card-school">
+            🏫 ${COUNSELOR.school}
+        </div>
+
+        <div class="counselor-card-hours">
+            🕐 Thời gian hỗ trợ: ${COUNSELOR.hours}
+        </div>
+
+        ${phoneHTML}
+
+        <div class="counselor-card-note">
+            Nếu em cảm thấy khó nói với chatbot,
+            em có thể tìm gặp hoặc nhắn trực tiếp
+            với cô khi phù hợp.
+        </div>
+    `;
+
+
+    chatBox.appendChild(card);
+
+
+    scrollToBottom();
+}
+
+
+/* =========================================================
+   11. ẨN CÁC NÚT GỢI Ý
+   ========================================================= */
+
+function hideSuggestions() {
+
+    const suggestions =
+        document.getElementById(
+            "suggestions"
+        );
+
+    if (!suggestions) return;
+
+    suggestions.style.display =
+        "none";
+}
+
+
+/* =========================================================
+   12. HIỆN LẠI NÚT GỢI Ý
+   ========================================================= */
+
+function showSuggestions() {
+
+    const suggestions =
+        document.getElementById(
+            "suggestions"
+        );
+
+    if (!suggestions) return;
+
+    suggestions.style.display =
+        "";
+}
+
+
+/* =========================================================
+   13. KHÓA / MỞ NÚT GỬI
+   ========================================================= */
+
+function setSendingState(sending) {
+
+    isSending = sending;
+
+
+    if (sendButton) {
+
+        sendButton.disabled =
+            sending;
+
+        if (sending) {
+
+            sendButton.dataset.oldText =
+                sendButton.innerHTML;
+
+            sendButton.innerHTML =
+                "…";
+
+        } else {
+
+            sendButton.innerHTML =
+                sendButton.dataset.oldText ||
+                "Gửi";
+
+        }
+    }
+
+
+    if (messageInput) {
+
+        messageInput.disabled =
+            sending;
+
+    }
+}
+
+
+/* =========================================================
+   14. PHÂN TÍCH TIN NHẮN
+   ========================================================= */
+
+function analyzeMessage(message) {
+
+    /*
+       Ưu tiên sử dụng counselingRules.js
+       nếu file này đã được tải.
+    */
+
+    try {
+
+        if (
+            typeof window.analyzeStudentMessage ===
+            "function"
+        ) {
+
+            return window.analyzeStudentMessage(
+                message
+            );
+
+        }
+
+    } catch (error) {
+
+        console.warn(
+            "Không thể phân tích bằng counselingRules.js:",
+            error
+        );
+    }
+
+
+    /*
+       Phân tích dự phòng đơn giản
+    */
+
+    const text =
+        message.toLowerCase();
+
+
+    const highRiskWords = [
+        "tự tử",
+        "muốn chết",
+        "chết đi",
+        "tự sát",
+        "tự làm đau",
+        "tự hại",
+        "cắt tay",
+        "không muốn sống",
+        "muốn kết thúc cuộc đời"
+    ];
+
+
+    const mediumRiskWords = [
+        "bắt nạt",
+        "cô lập",
+        "mất ngủ",
+        "không muốn đi học",
+        "không muốn đến trường",
+        "khóc nhiều",
+        "quá áp lực",
+        "stress",
+        "buồn rất lâu",
+        "không còn hứng thú"
+    ];
+
+
+    let riskLevel = "GREEN";
+
+
+    if (
+        highRiskWords.some(
+            word =>
+                text.includes(word)
+        )
+    ) {
+
+        riskLevel = "RED";
+
+    } else if (
+        mediumRiskWords.some(
+            word =>
+                text.includes(word)
+        )
+    ) {
+
+        riskLevel = "YELLOW";
+    }
+
+
+    return {
+        riskLevel,
+        topics: [],
+        emotions: []
+    };
+}
+
+
+/* =========================================================
+   15. KIỂM TRA NGUY CƠ CAO
+   ========================================================= */
+
+function isHighRisk(analysis) {
+
+    if (!analysis) return false;
+
+
+    return (
+        analysis.riskLevel === "RED" ||
+        analysis.risk === "RED" ||
+        analysis.level === "RED"
+    );
+}
+
+
+/* =========================================================
+   16. KIỂM TRA CÓ NÊN GIỚI THIỆU CÔ HƯỜNG
+   ========================================================= */
+
+function shouldContactCounselor(
+    analysis,
+    message = ""
+) {
+
+    if (!analysis) return false;
+
+
+    if (
+        isHighRisk(analysis)
+    ) {
+
+        return true;
+
+    }
+
+
+    if (
+        analysis.riskLevel === "YELLOW" ||
+        analysis.risk === "YELLOW" ||
+        analysis.level === "YELLOW"
+    ) {
+
+        return true;
+
+    }
+
+
+    const text =
+        message.toLowerCase();
+
+
+    const counselorWords = [
+        "cô tư vấn",
+        "gặp cô",
+        "muốn gặp cô",
+        "nói chuyện với cô",
+        "cần cô",
+        "cô hường",
+        "giáo viên tư vấn",
+        "tư vấn trực tiếp"
+    ];
+
+
+    return counselorWords.some(
+        word =>
+            text.includes(word)
+    );
+}
+
+
+/* =========================================================
+   17. PHẢN HỒI KHI CÓ NGUY CƠ CAO
+   ========================================================= */
+
+function getSafetyResponse() {
+
+    return `
+        <strong>Cô rất quan tâm đến điều em vừa chia sẻ.</strong>
+        <br><br>
+
+        Nếu em đang có nguy hiểm ngay lúc này,
+        em hãy tìm đến một người lớn mà em tin tưởng
+        và ở bên họ, đừng ở một mình.
+        <br><br>
+
+        Em có thể tìm gặp trực tiếp
+        <strong>Cô Hường – Giáo viên Tư vấn Tâm lý Học đường</strong>
+        để được hỗ trợ.
+        <br><br>
+
+        Điều quan trọng nhất lúc này
+        là em được an toàn.
+    `;
+}
+
+
+/* =========================================================
+   18. PHẢN HỒI KHI HỌC SINH KHÔNG MUỐN NÓI
+   ========================================================= */
+
+function getReluctantResponse() {
+
+    const responses = [
+
+        `
+        Không sao đâu em. 🌷
+        Em không cần phải kể hết ngay.
+        <br><br>
+        Nếu muốn, em chỉ cần nói cho cô biết:
+        <strong>Điều gì đang khiến em khó chịu nhất lúc này?</strong>
+        `,
+
+        `
+        Cô hiểu. Em có thể bắt đầu thật ngắn thôi. 🌱
+        <br><br>
+        Ví dụ:
+        <strong>“Em đang buồn”</strong>,
+        <strong>“Em đang rất áp lực”</strong>
+        hoặc
+        <strong>“Em không biết phải làm gì.”</strong>
+        `,
+
+        `
+        Em không cần phải tìm đúng từ đâu.
+        Cứ nói theo cách của em nhé. 💙
+        <br><br>
+        Cô đang lắng nghe em.
+        `
+    ];
+
+
+    return responses[
+        Math.floor(
+            Math.random() *
+            responses.length
+        )
+    ];
+}
+
+
+/* =========================================================
+   19. PHẢN HỒI DỰ PHÒNG
+   ========================================================= */
+
+function getFallbackResponse() {
+
+    return `
+        Cô đang lắng nghe em. 🌷
+        <br><br>
+
+        Em có thể kể cho cô biết thêm một chút
+        về điều đang khiến em buồn,
+        lo lắng hoặc khó xử không?
+        <br><br>
+
+        Em không cần kể tất cả.
+        Chỉ cần bắt đầu từ điều em cảm thấy
+        khó nói nhất.
+    `;
+}
+
+
+/* =========================================================
+   20. GỌI BACKEND AI
+   ========================================================= */
+
+async function askAI(
+    message,
+    analysis
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/chat",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        message,
+
+                        analysis,
+
+                        history:
+                            conversationHistory
+                                .slice(-10)
+                    })
+                }
+            );
+
+
+        /*
+           Kiểm tra lỗi HTTP
+        */
+
+        if (!response.ok) {
+
+            throw new Error(
+                `HTTP ${response.status}`
+            );
+        }
+
+
+        const data =
+            await response.json();
+
+
+        /*
+           Backend trả về reply
+        */
+
+        if (
+            data &&
+            data.reply
+        ) {
+
+            return data;
+
+        }
+
+
+        return {
+            reply:
+                getFallbackResponse(),
+
+            showCounselor:
+                false,
+
+            riskLevel:
+                analysis?.riskLevel ||
+                "GREEN"
+        };
+
+
+    } catch (error) {
+
+        console.error(
+            "Lỗi kết nối Chatbot:",
+            error
+        );
+
+
+        /*
+           Không để học sinh thấy
+           thông báo kỹ thuật dài dòng.
+        */
+
+        return {
+
+            reply: `
+                Cô vẫn đang ở đây với em. 🌷
+                <br><br>
+                Hiện tại hệ thống đang gặp
+                một chút trục trặc.
+                <br><br>
+                Em có thể thử gửi lại tin nhắn
+                sau một chút nhé.
+            `,
+
+            showCounselor:
+                false,
+
+            riskLevel:
+                analysis?.riskLevel ||
+                "GREEN",
+
+            error: true
+        };
+    }
+}
+
+
+/* =========================================================
+   21. TẠO PHẢN HỒI
+   ========================================================= */
+
+async function generateResponse(
+    message
+) {
+
+    const cleanMessage =
+        String(message || "")
+            .trim();
+
+
+    if (!cleanMessage) {
+
+        return;
+
+    }
+
+
+    /*
+       Phân tích nội dung
+    */
+
+    const analysis =
+        analyzeMessage(
+            cleanMessage
+        );
+
+
+    /*
+       Nếu nguy cơ cao:
+       không cần gọi AI trước.
+    */
+
+    if (
+        isHighRisk(analysis)
+    ) {
+
+        return {
+
+            reply:
+                getSafetyResponse(),
+
+            showCounselor:
+                true,
+
+            riskLevel:
+                "RED"
+        };
+    }
+
+
+    /*
+       Gọi AI
+    */
+
+    const result =
+        await askAI(
+            cleanMessage,
+            analysis
+        );
+
+
+    /*
+       Quyết định hiện thông tin cô Hường
+    */
+
+    const showCounselorCard =
+        Boolean(
+            result.showCounselor
+        ) ||
+        shouldContactCounselor(
+            analysis,
+            cleanMessage
+        );
+
+
+    return {
+
+        reply:
+            result.reply ||
+            getFallbackResponse(),
+
+        showCounselor:
+            showCounselorCard,
+
+        riskLevel:
+            result.riskLevel ||
+            analysis.riskLevel ||
+            "GREEN"
+    };
+}
+
+
+/* =========================================================
+   22. GỬI TIN NHẮN
+   ========================================================= */
+
+async function sendMessage(
+    customMessage = null
+) {
+
+    /*
+       Không cho gửi liên tục
+    */
+
+    if (isSending) {
+
+        return;
+    }
+
+
+    /*
+       Lấy nội dung
+    */
+
+    const message =
+        customMessage !== null
+            ? String(customMessage).trim()
+            : String(
+                messageInput?.value || ""
+              ).trim();
+
+
+    /*
+       Không gửi tin nhắn rỗng
+    */
+
+    if (!message) {
+
+        return;
+    }
+
+
+    /*
+       Xóa nội dung ô nhập
+    */
+
+    if (
+        customMessage === null &&
+        messageInput
+    ) {
+
+        messageInput.value = "";
+
+        messageInput.style.height =
+            "auto";
+    }
+
+
+    /*
+       Ẩn lời gợi ý sau tin nhắn đầu tiên
+    */
+
+    hideSuggestions();
+
+
+    /*
+       Hiện tin nhắn học sinh
+    */
+
+    addMessage(
+        "user",
+        message
+    );
+
+
+    /*
+       Lưu lịch sử
+    */
+
+    conversationHistory.push({
+
+        role: "user",
+
+        content: message
+    });
+
+
+    /*
+       Bắt đầu trạng thái gửi
+    */
+
+    setSendingState(true);
+
+
+    /*
+       Hiệu ứng đang trả lời
+    */
+
+    showTyping();
+
+
+    try {
+
+        const result =
+            await generateResponse(
+                message
+            );
+
+
+        /*
+           Xóa hiệu ứng
+        */
+
+        removeTyping();
+
+
+        /*
+           Hiện câu trả lời
+        */
+
+        addMessage(
+            "assistant",
+            result.reply
+        );
+
+
+        /*
+           Lưu lịch sử AI
+        */
+
+        conversationHistory.push({
+
+            role: "assistant",
+
+            content: result.reply
+        });
+
+
+        /*
+           Nếu cần,
+           hiện thông tin cô Hường
+        */
+
+        if (
+            result.showCounselor
+        ) {
+
+            showCounselor();
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        removeTyping();
+
+
+        addMessage(
+            "assistant",
+            getFallbackResponse()
+        );
+
+    } finally {
+
+        setSendingState(false);
+
+
+        /*
+           Đưa con trỏ về ô nhập
+        */
+
+        if (messageInput) {
+
+            messageInput.focus();
+
+        }
+    }
+}
+
+
+/* =========================================================
+   23. XỬ LÝ NÚT GỢI Ý
+   ========================================================= */
+
+function setupSuggestionButtons() {
+
+    suggestionButtons.forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    const message =
+                        button.dataset.message ||
+                        button.getAttribute(
+                            "data-message"
+                        );
+
+
+                    if (!message) return;
+
+
+                    sendMessage(
+                        message
+                    );
+                }
+            );
+
+        }
+    );
+}
+
+
+/* =========================================================
+   24. XỬ LÝ PHÍM ENTER
+   ========================================================= */
+
+function setupInput() {
+
+    if (!messageInput) return;
+
+
+    messageInput.addEventListener(
+        "keydown",
+        event => {
+
+            /*
+               Enter = gửi
+               Shift + Enter = xuống dòng
+            */
+
+            if (
+                event.key === "Enter" &&
+                !event.shiftKey
+            ) {
+
+                event.preventDefault();
+
+                sendMessage();
+
+            }
+        }
+    );
+
+
+    /*
+       Tự động tăng chiều cao ô nhập
+    */
+
+    messageInput.addEventListener(
+        "input",
+        () => {
+
+            messageInput.style.height =
+                "auto";
+
+            messageInput.style.height =
+                Math.min(
+                    messageInput.scrollHeight,
+                    140
+                ) + "px";
+        }
+    );
+}
+
+
+/* =========================================================
+   25. XỬ LÝ NÚT GỬI
+   ========================================================= */
+
+function setupSendButton() {
+
+    if (!sendButton) return;
+
+
+    sendButton.addEventListener(
+        "click",
+        () => {
+
+            sendMessage();
+
+        }
+    );
+}
+
+
+/* =========================================================
+   26. LỜI CHÀO BAN ĐẦU
+   ========================================================= */
+
+function showWelcomeMessage() {
+    if (firstMessageShown) return;
+    firstMessageShown = true;
+
+    const welcomeMessage = `
+        Chào em! 👋 Cô Hường rất vui được trò chuyện cùng em!
+        <br><br>
+        Nếu em có bất kỳ khó khăn, lo lắng nào trong học tập,
+        bạn bè, gia đình hay cảm xúc, hãy chia sẻ với cô nhé 💜
+    `;
+
+    addMessage("assistant", welcomeMessage);
+}
+
+
+/* =========================================================
+   27. KHỞI ĐỘNG CHATBOT
+   ========================================================= */
+
+function initChatbot() {
+
+    console.log(
+        "Cô Hường Chatbot đang khởi động..."
+    );
+
+
+    /*
+       Thiết lập các thành phần
+    */
+
+    setupSuggestionButtons();
+
+    setupInput();
+
+    setupSendButton();
+
+
+    /*
+       Lời chào đầu tiên
+    */
+
+    showWelcomeMessage();
+
+
+    /*
+       Đưa con trỏ vào ô nhập
+    */
+
+    if (messageInput) {
+
+        setTimeout(
+            () => {
+
+                messageInput.focus();
+
+            },
+            300
+        );
+    }
+
+
+    console.log(
+        "Cô Hường Chatbot đã sẵn sàng."
+    );
+}
+
+
+/* =========================================================
+   28. KHỞI ĐỘNG KHI TRANG ĐÃ TẢI
+   ========================================================= */
+
+if (
+    document.readyState === "loading"
+) {
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        initChatbot
+    );
+
+} else {
+
+    initChatbot();
+
+}
+
+
+/* =========================================================
+   29. CHO PHÉP CÁC FILE KHÁC GỌI HÀM
+   ========================================================= */
+
+window.sendMessage =
+    sendMessage;
+
+window.generateResponse =
+    generateResponse;
+
+window.showCounselor =
+    showCounselor;
+
+window.showWelcomeMessage =
+    showWelcomeMessage;
+</script>
 </body>
 </html>
